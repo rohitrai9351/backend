@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+
 const app = express();
 
 app.use(cors());
@@ -43,13 +44,17 @@ const users = [
   },
 ];
 
+app.get("/", (req, res) => {
+  res.send("Backend running on Vercel 🚀");
+});
+
 app.get("/users", (req, res) => {
   res.json({ users });
 });
 
 app.get("/users/:id", (req, res) => {
-  let userId = parseInt(req.params.id);
-  let user = users.find((user) => user.id === userId);
+  const userId = parseInt(req.params.id);
+  const user = users.find((user) => user.id === userId);
 
   if (user) {
     res.json({ user });
@@ -58,7 +63,5 @@ app.get("/users/:id", (req, res) => {
   }
 });
 
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// 👇 THIS IS THE KEY LINE FOR VERCEL
+module.exports = app;
